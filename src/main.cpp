@@ -17,7 +17,7 @@ public:
   Led(int pin, long wait) {
     ledPin = pin;
     waitTimeInMs = wait;
-    pinOnOff = true;
+    pinOnOff = false;
 
     pinMode(ledPin, OUTPUT);
     digitalWrite(ledPin, pinOnOff);
@@ -85,19 +85,31 @@ void setup()
   Serial.begin(9600);
 
   // int result = myFunction(2, 3);
-  trafficLight.setBlinking(TrafficLight::Color::RED, 500);
-  trafficLight.setOn(TrafficLight::Color::YELLOW, false);
 }
 
-void loop()
-{
+const unsigned int MAX_MESSAGE_LENGTH = 4;
+
+void loop() {
+
+  static char message[MAX_MESSAGE_LENGTH];
+  static unsigned int message_pos = 0;
+
   // put your main code here, to run repeatedly:
+  if (Serial.available() >= 3) {
+    Serial.readBytes(message, 3);
+
+    trafficLight.setOn(TrafficLight::Color::RED, (message[0] == 'R'));
+    trafficLight.setOn(TrafficLight::Color::YELLOW, (message[1] == 'A'));
+    trafficLight.setOn(TrafficLight::Color::GREEN, (message[2] == 'G'));
+  }
+  trafficLight.update();
+  delay(99);
+
+  /*
   static u32 i = 0;
   Serial.println(i);
-
-  trafficLight.update();
-  delay(9);
-  i++;
+  delay(500);
+  i++;*/
 }
 
 // put function definitions here:
