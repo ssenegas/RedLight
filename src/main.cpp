@@ -121,6 +121,8 @@ void loop() {
   }
   trafficLight.update();
 
+  delay(200);
+
   /*
   static u32 i = 0;
   Serial.println(i);
