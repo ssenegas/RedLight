@@ -1,10 +1,7 @@
 #include <Arduino.h>
 
-#define PIN_RED 2
-#define PIN_YELLOW 3
-#define PIN_GREEN 4
-
 class Led {
+private:
   int ledPin;
   long waitTimeInMs;
   unsigned long previousMillis;
@@ -37,10 +34,8 @@ public:
   }
 
   void update() {
-    if (waitTimeInMs > 0)
-    {
-      if ((millis() - previousMillis) >= waitTimeInMs)
-      {
+    if (waitTimeInMs > 0) {
+      if ((millis() - previousMillis) >= waitTimeInMs) {
         previousMillis = millis();
         pinOnOff = !pinOnOff;
       }
@@ -51,6 +46,10 @@ public:
 
 class TrafficLight {
 private:
+  const int PIN_RED = 2;
+  const int PIN_YELLOW = 3;
+  const int PIN_GREEN = 4;
+
   Led leds[3] = {Led(PIN_RED), Led(PIN_YELLOW), Led(PIN_GREEN)};
 
 public:
@@ -77,33 +76,50 @@ public:
 // put function declarations here:
 int myFunction(int, int);
 
+bool isRedOn(String incomingData);
+bool isYellowOn(String incomingData);
+bool isGreenOn(String incomingData);
+int getRedDelay(String incomingData);
+int getYellowDelay(String incomingData);
+int getGreenDelay(String incomingData);
+
 TrafficLight trafficLight;
 
 void setup()
 {
   // put your setup code here, to run once:
   Serial.begin(9600);
-
+  Serial.setTimeout(10);
   // int result = myFunction(2, 3);
 }
 
-const unsigned int MAX_MESSAGE_LENGTH = 4;
+const unsigned int MESSAGE_LENGTH = 15;
+
+// Message format [R|r]\d{4}[Y|y]\d{4}[G|g]\d{4}
+// Length message is 15 characters
+// Index for leds Red 1, Yellow 5, Green 10
+// Index for delay Red [1, 5], Yellow [6, 10], Green [11, 15]
+// Example r1000y0000G0000, Red is blinking with 1000 ms delay, Yellow is Off, Green is On
 
 void loop() {
-
-  static char message[MAX_MESSAGE_LENGTH];
-  static unsigned int message_pos = 0;
-
   // put your main code here, to run repeatedly:
-  if (Serial.available() >= 3) {
-    Serial.readBytes(message, 3);
+  if (Serial.available() > 0 ) {
+    // Read the incoming data and print it to the serial monitor
+    String incomingData = Serial.readString();
+    
+    Serial.print("Incoming data :");
+    Serial.println(incomingData);
 
-    trafficLight.setOn(TrafficLight::Color::RED, (message[0] == 'R'));
-    trafficLight.setOn(TrafficLight::Color::YELLOW, (message[1] == 'A'));
-    trafficLight.setOn(TrafficLight::Color::GREEN, (message[2] == 'G'));
+    trafficLight.setOn(TrafficLight::Color::RED, isRedOn(incomingData));
+    trafficLight.setBlinking(TrafficLight::Color::RED, getRedDelay(incomingData));
+
+    trafficLight.setOn(TrafficLight::Color::YELLOW, isYellowOn(incomingData));
+    trafficLight.setBlinking(TrafficLight::Color::YELLOW, getYellowDelay(incomingData));
+
+    trafficLight.setOn(TrafficLight::Color::GREEN, isGreenOn(incomingData));
+    trafficLight.setBlinking(TrafficLight::Color::GREEN, getGreenDelay(incomingData));
   }
   trafficLight.update();
-  delay(99);
 
   /*
   static u32 i = 0;
@@ -116,4 +132,28 @@ void loop() {
 int myFunction(int x, int y)
 {
   return x + y;
+}
+
+bool isRedOn(String incomingData) {
+  return incomingData.charAt(0) == 'R';
+}
+
+bool isYellowOn(String incomingData) {
+  return incomingData.charAt(5) == 'Y';
+}
+
+bool isGreenOn(String incomingData) {
+  return incomingData.charAt(10) == 'G';
+}
+
+int getRedDelay(String incomingData) {
+  return incomingData.substring(1, 5).toInt();
+}
+
+int getYellowDelay(String incomingData) {
+  return incomingData.substring(6, 10).toInt();
+}
+
+int getGreenDelay(String incomingData) {
+  return incomingData.substring(11, 15).toInt();
 }
