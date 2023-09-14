@@ -75,8 +75,6 @@ public:
 };
 
 // put function declarations here:
-int myFunction(int, int);
-
 bool isRedOn(String incomingData);
 bool isYellowOn(String incomingData);
 bool isGreenOn(String incomingData);
@@ -93,8 +91,6 @@ void setup()
   Serial.setTimeout(10);
   // int result = myFunction(2, 3);
 }
-
-const unsigned int MESSAGE_LENGTH = 15;
 
 // Message format [R|r]\d{4}[Y|y]\d{4}[G|g]\d{4}
 // Length message is 15 characters
@@ -121,20 +117,9 @@ void loop() {
     trafficLight.setBlinking(TrafficLight::Color::GREEN, getGreenDelay(incomingData));
   }
   trafficLight.update(millis());
-
-  /*
-  static u32 i = 0;
-  Serial.println(i);
-  delay(500);
-  i++;*/
 }
 
 // put function definitions here:
-int myFunction(int x, int y)
-{
-  return x + y;
-}
-
 bool isRedOn(String incomingData) {
   return incomingData.charAt(0) == 'R';
 }
