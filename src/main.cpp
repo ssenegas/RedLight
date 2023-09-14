@@ -2,18 +2,18 @@
 
 class Led {
 private:
-  int ledPin;
-  long waitTimeInMs;
+  byte ledPin;
+  unsigned long eventInterval;
   unsigned long previousMillis;
   bool pinOnOff;
 
 public:
-  Led(int pin) : Led(pin, 0) {
+  Led(byte pin) : Led(pin, 0) {
   }
 
-  Led(int pin, long wait) {
+  Led(byte pin, unsigned long interval) {
     ledPin = pin;
-    waitTimeInMs = wait;
+    eventInterval = interval;
     pinOnOff = false;
 
     pinMode(ledPin, OUTPUT);
@@ -25,19 +25,20 @@ public:
       return;
 
     pinOnOff = on;
-    waitTimeInMs = 0;
+    eventInterval = 0;
     previousMillis = millis();
   }
 
-  void setBlinking(long wait) {
-    waitTimeInMs = wait;
+  void setBlinking(unsigned long interval) {
+    eventInterval = interval;
   }
 
-  void update() {
-    if (waitTimeInMs > 0) {
-      if ((millis() - previousMillis) >= waitTimeInMs) {
-        previousMillis = millis();
-        pinOnOff = !pinOnOff;
+  void update(unsigned long millis) {
+    if (eventInterval > 0) {
+      unsigned long currentTime = millis;
+      if (currentTime - previousMillis >= eventInterval) {
+        previousMillis = currentTime;
+        pinOnOff = ! pinOnOff;
       }
     }
     digitalWrite(ledPin, pinOnOff);
@@ -46,9 +47,9 @@ public:
 
 class TrafficLight {
 private:
-  const int PIN_RED = 2;
-  const int PIN_YELLOW = 3;
-  const int PIN_GREEN = 4;
+  const byte PIN_RED = 2;
+  const byte PIN_YELLOW = 3;
+  const byte PIN_GREEN = 4;
 
   Led leds[3] = {Led(PIN_RED), Led(PIN_YELLOW), Led(PIN_GREEN)};
 
@@ -62,13 +63,13 @@ public:
     leds[c].setOn(on);
   }
 
-  void setBlinking(Color c, long wait) {
-    leds[c].setBlinking(wait);
+  void setBlinking(Color c, unsigned long interval) {
+    leds[c].setBlinking(interval);
   }
 
-  void update() {
+  void update(unsigned long millis) {
     for (int c = RED; c <= GREEN; c++) {
-      leds[c].update();
+      leds[c].update(millis);
     }
   }
 };
@@ -119,9 +120,7 @@ void loop() {
     trafficLight.setOn(TrafficLight::Color::GREEN, isGreenOn(incomingData));
     trafficLight.setBlinking(TrafficLight::Color::GREEN, getGreenDelay(incomingData));
   }
-  trafficLight.update();
-
-  delay(200);
+  trafficLight.update(millis());
 
   /*
   static u32 i = 0;
