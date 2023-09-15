@@ -89,7 +89,6 @@ void setup()
   // put your setup code here, to run once:
   Serial.begin(9600);
   Serial.setTimeout(10);
-  // int result = myFunction(2, 3);
 }
 
 // Message format [R|r]\d{4}[Y|y]\d{4}[G|g]\d{4}
