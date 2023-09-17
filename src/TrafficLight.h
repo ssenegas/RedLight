@@ -36,9 +36,9 @@ private:
     bool parseRedOn(String message);
     bool parseYellowOn(String message);
     bool parseGreenOn(String message);
-    int parseRedDelay(String message);
-    int parseYellowDelay(String message);
-    int parseGreenDelay(String message);
+    int parseRedBlinkRate(String message);
+    int parseYellowBlinkRate(String message);
+    int parseGreenBlinkRate(String message);
 };
 
 #endif

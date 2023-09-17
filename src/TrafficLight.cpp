@@ -30,7 +30,7 @@ void TrafficLight::turnOffGreen() {
 
 void TrafficLight::setBlinkRate(Color c, unsigned long blinkRate) {
     if (blinkRate > 0) {
-    leds[c].setBlinkRate(blinkRate);
+        leds[c].setBlinkRate(blinkRate);
     }
 }
 
@@ -41,16 +41,16 @@ void TrafficLight::setBlinkRate(Color c, unsigned long blinkRate) {
 // Example r1000y0000G0000, Red is blinking with 1000 ms delay, Yellow is Off, Green is On
 void TrafficLight::parse(String message) {
     parseRedOn(message) ? turnOn(RED) : turnOff(RED);
-    setBlinkRate(RED, parseRedDelay(message));
+    setBlinkRate(RED, parseRedBlinkRate(message));
     parseYellowOn(message) ? turnOn(YELLOW) : turnOff(YELLOW);
-    setBlinkRate(YELLOW, parseYellowDelay(message));
+    setBlinkRate(YELLOW, parseYellowBlinkRate(message));
     parseGreenOn(message) ? turnOn(GREEN) : turnOff(GREEN);
-    setBlinkRate(GREEN, parseGreenDelay(message));
+    setBlinkRate(GREEN, parseGreenBlinkRate(message));
 }
 
 void TrafficLight::update(unsigned long millis) {
     for (int c = RED; c <= GREEN; c++) {
-    leds[c].update(millis);
+        leds[c].update(millis);
     }
 }
 
@@ -74,14 +74,14 @@ bool TrafficLight::parseGreenOn(String message) {
     return message.charAt(10) == 'G';
 }
 
-int TrafficLight::parseRedDelay(String message) {
+int TrafficLight::parseRedBlinkRate(String message) {
     return message.substring(1, 5).toInt();
 }
 
-int TrafficLight::parseYellowDelay(String message) {
+int TrafficLight::parseYellowBlinkRate(String message) {
     return message.substring(6, 10).toInt();
 }
 
-int TrafficLight::parseGreenDelay(String message) {
+int TrafficLight::parseGreenBlinkRate(String message) {
     return message.substring(11, 15).toInt();
 }
