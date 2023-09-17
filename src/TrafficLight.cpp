@@ -1,7 +1,6 @@
 #include <Arduino.h>
 #include "TrafficLight.h"
 
-
 TrafficLight::TrafficLight() {
 }
 
