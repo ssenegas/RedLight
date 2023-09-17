@@ -6,7 +6,7 @@
 class TrafficLight {
 
   private:
-const byte PIN_RED = 2;
+    const byte PIN_RED = 2;
     const byte PIN_YELLOW = 3;
     const byte PIN_GREEN = 4;
 
