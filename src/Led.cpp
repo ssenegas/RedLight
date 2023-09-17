@@ -2,7 +2,7 @@
 #include "Led.h"
 
 Led::Led(byte pin) : Led(pin, 0) {
-    }
+}
 
 Led::Led(byte pin, unsigned long blinkRate) {
     ledPin = pin;
@@ -37,10 +37,10 @@ void Led::setBlinkRate(unsigned long blinkRate) {
 
 void Led::update(unsigned long millis) {
     if (blinkRateInMillis > 0) {
-    unsigned long currentTime = millis;
-    if (currentTime - previousMillis >= blinkRateInMillis) {
-        previousMillis = currentTime;
-        toogle();
-    }
+        unsigned long currentTime = millis;
+        if (currentTime - previousMillis >= blinkRateInMillis) {
+            previousMillis = currentTime;
+            toogle();
+        }
     }
 }
