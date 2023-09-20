@@ -14,10 +14,10 @@ void loop() {
   unsigned long currentTime = millis();
 
   if (Serial.available() > 0 ) {
-    // read the incoming data and print it to the serial monitor
+    // read the incoming data from serial buffer and print it to the serial monitor
     String message = Serial.readString();
     
-    Serial.print("Incoming message :");
+    Serial.print("message read from serial:");
     Serial.println(message);
 
     trafficLight.parse(message);
