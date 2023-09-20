@@ -39,11 +39,10 @@ void TrafficLight::setBlinkRate(Color c, unsigned long blinkRate) {
 // Example r1000y0000G0000, Red is blinking with 1000 ms delay, Yellow is Off, Green is On
 void TrafficLight::parse(String message) {
     parseRedOn(message) ? turnOn(RED) : turnOff(RED);
-    parseYellowOn(message) ? turnOn(YELLOW) : turnOff(YELLOW);
-    parseGreenOn(message) ? turnOn(GREEN) : turnOff(GREEN);
-
     setBlinkRate(RED, parseRedBlinkRate(message));
+    parseYellowOn(message) ? turnOn(YELLOW) : turnOff(YELLOW);
     setBlinkRate(YELLOW, parseYellowBlinkRate(message));
+    parseGreenOn(message) ? turnOn(GREEN) : turnOff(GREEN);
     setBlinkRate(GREEN, parseGreenBlinkRate(message));
 }
 
@@ -62,55 +61,25 @@ void TrafficLight::turnOff(Color c) {
 }
 
 bool TrafficLight::parseRedOn(String message) {
-    bool isRedOn = message.charAt(0) == 'R';
-    
-    char strBuf[50];
-    sprintf(strBuf, "parse is Red On = %s", isRedOn ? "true" : "false");
-    Serial.println(strBuf);
-    return isRedOn;
+    return message.charAt(0) == 'R';
 }
 
 bool TrafficLight::parseYellowOn(String message) {
-    bool isYellowOn = message.charAt(5) == 'Y';
-    
-    char strBuf[50];
-    sprintf(strBuf, "parse is Yellow On = %s", isYellowOn ? "true" : "false");
-    Serial.println(strBuf);
-    return isYellowOn;
+    return message.charAt(5) == 'Y';
 }
 
 bool TrafficLight::parseGreenOn(String message) {
-    bool isGreenOn = message.charAt(10) == 'G';
-
-    char strBuf[50];
-    sprintf(strBuf, "parse is Green On = %s", isGreenOn ? "true" : "false");
-    Serial.println(strBuf);
-    return isGreenOn;
+    return message.charAt(10) == 'G';
 }
 
 int TrafficLight::parseRedBlinkRate(String message) {
-    int redBlinkRate = message.substring(1, 5).toInt();
-
-    char strBuf[50];
-    sprintf(strBuf, "parse Red blink rate = %d", redBlinkRate);
-    Serial.println(strBuf);
-    return redBlinkRate;
+    return message.substring(1, 5).toInt();
 }
 
 int TrafficLight::parseYellowBlinkRate(String message) {
-    int yellowBlinkRate = message.substring(6, 10).toInt();
-
-    char strBuf[50];
-    sprintf(strBuf, "parse yellow blink rate = %d", yellowBlinkRate);
-    Serial.println(strBuf);
-    return yellowBlinkRate;
+    return message.substring(6, 10).toInt();
 }
 
 int TrafficLight::parseGreenBlinkRate(String message) {
-    int greenBlinkRate = message.substring(11, 15).toInt();
-
-    char strBuf[50];
-    sprintf(strBuf, "parse green blink rate = %d", greenBlinkRate);
-    Serial.println(strBuf);
-    return greenBlinkRate;
+    return message.substring(11, 15).toInt();
 }
