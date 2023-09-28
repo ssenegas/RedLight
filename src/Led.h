@@ -10,6 +10,7 @@ class Led {
     unsigned long previousMillis;
 
   public:
+    Led();
     Led(byte pin);
     Led(byte pin, unsigned long blinkRate);
 

@@ -1,6 +1,9 @@
 #include <Arduino.h>
 #include "Led.h"
 
+Led::Led() : Led(0) {
+}
+
 Led::Led(byte pin) : Led(pin, 0) {
 }
 
