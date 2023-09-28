@@ -35,9 +35,8 @@ void Led::setBlinkRate(unsigned long blinkRate) {
     blinkRateInMillis = blinkRate;
 }
 
-void Led::update(unsigned long millis) {
+void Led::update(unsigned long currentTime) {
     if (blinkRateInMillis > 0) {
-        unsigned long currentTime = millis;
         if (currentTime - previousMillis >= blinkRateInMillis) {
             previousMillis = currentTime;
             toogle();

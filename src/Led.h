@@ -20,7 +20,7 @@ class Led {
     unsigned long getBlinkRate();
     void setBlinkRate(unsigned long blinkRate);
 
-    void update(unsigned long millis);
+    void update(unsigned long currentTime);
 };
 
 #endif
