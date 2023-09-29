@@ -17,9 +17,9 @@ void TrafficLight::setBlinkRate(Color c, unsigned long blinkRate) {
 }
 
 void TrafficLight::update(unsigned long currentTime) {
-    for (int c = RED; c <= GREEN; c++) {
-        leds[static_cast<Color>(c)].update(currentTime);
-    }
+    leds[RED].update(currentTime);
+    leds[YELLOW].update(currentTime);
+    leds[GREEN].update(currentTime);
 }
 
 // Command format [R|r]\d{4}[Y|y]\d{4}[G|g]\d{4}
