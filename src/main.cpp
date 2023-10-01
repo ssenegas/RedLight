@@ -14,15 +14,9 @@ void loop() {
   unsigned long currentTime = millis();
 
   if (Serial.available() >= 15 ) {
-    // read the incoming data from serial buffer and print it to the serial monitor
     String command = Serial.readStringUntil('\0');
 
     if (command.length() >= 15) {
-      Serial.print("command read from serial:");
-      Serial.println(command);
-      Serial.print("length:");
-      Serial.println(command.length());
-
       trafficLight.parse(command);
     }
   }

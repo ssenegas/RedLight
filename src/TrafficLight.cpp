@@ -44,18 +44,8 @@ void TrafficLight::parse(String command) {
 }
 
 void TrafficLight::processLED(String command, Color c) {
-  Serial.print("command:");
-  Serial.println(command);
-  Serial.print("command length:");
-  Serial.println(command.length());
-
   char s = command.charAt(0);
   int interval = command.substring(1).toInt();
-
-  Serial.print("status:");
-  Serial.println(s);
-  Serial.print("interval:");
-  Serial.println(interval);
 
   if (s == status[c].on || s == status[c].off) {
     s == status[c].on ? turnOn(c) : turnOff(c);
