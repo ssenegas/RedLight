@@ -1,7 +1,9 @@
 #ifndef TrafficLight_h
 #define TrafficLight_h
 #include <Arduino.h>
-#include "Led.h"
+#include "Red.h"
+#include "Yellow.h"
+#include "Green.h"
 #include "etl/map.h"
 
 class TrafficLight {
@@ -10,6 +12,7 @@ class TrafficLight {
     enum Color { RED = 0, YELLOW, GREEN };
 
     TrafficLight();
+    ~TrafficLight();
 
     void turnOn(Color c);
     void turnOff(Color c);
@@ -20,15 +23,11 @@ class TrafficLight {
 
 private:
     void processLED(String command, Color c);
-    
-    const byte PIN_RED = 2;
-    const byte PIN_YELLOW = 3;
-    const byte PIN_GREEN = 4;
 
-    etl::map<Color, Led, 3> leds =
-      etl::make_map<Color, Led>( etl::pair<Color, Led>{RED, Led(PIN_RED)},
-                                 etl::pair<Color, Led>{YELLOW, Led(PIN_YELLOW)},
-                                 etl::pair<Color, Led>{GREEN, Led(PIN_GREEN)} );
+    etl::map<Color, Led*, 3> leds =
+      etl::make_map<Color, Led*>( etl::pair<Color, Led*>{RED, new Red()},
+                                  etl::pair<Color, Led*>{YELLOW, new Yellow()},
+                                  etl::pair<Color, Led*>{GREEN, new Green()} );
 
     struct Status {
       char on;

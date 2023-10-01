@@ -4,22 +4,28 @@
 TrafficLight::TrafficLight() {
 }
 
+TrafficLight::~TrafficLight() {
+    delete leds[RED];
+    delete leds[YELLOW];
+    delete leds[GREEN];
+}
+
 void TrafficLight::turnOn(Color c) {
-    leds[c].turnOn();
+    leds[c]->turnOn();
 }
 
 void TrafficLight::turnOff(Color c) {
-    leds[c].turnOff();
+    leds[c]->turnOff();
 }
 
 void TrafficLight::setBlinkRate(Color c, unsigned long blinkRate) {
-    leds[c].setBlinkRate(blinkRate);
+    leds[c]->setBlinkRate(blinkRate);
 }
 
 void TrafficLight::update(unsigned long currentTime) {
-    leds[RED].update(currentTime);
-    leds[YELLOW].update(currentTime);
-    leds[GREEN].update(currentTime);
+    leds[RED]->update(currentTime);
+    leds[YELLOW]->update(currentTime);
+    leds[GREEN]->update(currentTime);
 }
 
 // Command format [R|r]\d{4}[Y|y]\d{4}[G|g]\d{4}
