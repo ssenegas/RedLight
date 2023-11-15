@@ -8,6 +8,7 @@ TrafficLight trafficLight;
 
 void setup() {
   Serial.begin(9600);
+  trafficLight.parse("R2000Y3000G2000"); // demo mode as default
 }
 
 void loop() {
